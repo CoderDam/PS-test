@@ -1,45 +1,22 @@
 import { ReactElement } from 'react'
 import axios from 'axios'
 import { useQuery } from 'react-query'
-import { Box, Grid, styled, Typography } from '@mui/material'
+import { Box, Grow, Grid, styled, Typography, useMediaQuery, useTheme } from '@mui/material'
 
 import Loader from './Loader'
 import { BookType, ErrorType } from '../types'
+import Book from './Book'
+import { StyledContainer, StyledContent, StyledTitle } from '../styles/styledComponents'
 
-const bookStyle = {
-  backgroundColor: '#4b3621',
-  border: '2px solid black',
-  display: 'flex',
-  flex: '1 0 auto',
-  flexDirection: 'column',
-  height: 410,
-  justifyContent: 'center',
-  writingMode: 'vertical-lr'
-}
 const errorStyle = {
   backgroundColor: 'black',
   color: 'white',
   fontFamily: 'monospace',
   opacity: 0.75
 }
-const Container = styled(Box)(({ theme }) => ({
-  flex: 1,
-  [theme.breakpoints.down('sm')]: {
-    padding: theme.spacing(1)
-  },
-  [theme.breakpoints.up('sm')]: {
-    padding: theme.spacing(3)
-  }
-}))
-const Title = styled(Typography)(({ theme }) => ({
-  [theme.breakpoints.up('md')]: {
-    marginTop: theme.spacing(4)
-  }
-}))
 const Shelf = styled(Grid)(({ theme }) => ({
   borderBottom: '30px solid #1e0c0c',
   flexWrap: 'nowrap',
-  marginTop: theme.spacing(3),
   [theme.breakpoints.down('sm')]: {
     padding: '0 2vh'
   },
@@ -47,45 +24,65 @@ const Shelf = styled(Grid)(({ theme }) => ({
     padding: '0 10vh'
   },
   [theme.breakpoints.up('md')]: {
-    padding: '50px 7vh 0'
+    padding: '0 7vh 0'
   }
 }))
 
-function Books (): ReactElement {
+interface Props {
+  selectedBooks: BookType[]
+  onAddBook: (book: BookType) => void
+  onDeleteBook: (book: BookType) => void
+}
+
+function Books ({ selectedBooks, onAddBook, onDeleteBook }: Props): ReactElement {
+  const theme = useTheme()
+  const isDownMd = useMediaQuery(theme.breakpoints.down('md'))
+
   const { data, isLoading, isIdle, isError, error } = useQuery<BookType[], ErrorType>(
     'books',
     async () => await axios.get('https://henri-potier.techx.fr/books').then((res) => res.data)
   )
 
+  const selectedIsbn: string[] = selectedBooks.map((book: BookType) => book.isbn)
+
   return (
-    <Container>
-      <Title color='primary' variant='h5' paragraph>
+    <StyledContainer>
+      <StyledTitle color='primary' variant='h5' paragraph>
         Voici les livres que vous pouvez consulter ici :
-      </Title>
-      {(isLoading || isIdle) && <Loader ratio={0.67} />}
-      {isError && (
-        <div>
-          <Typography color='error' paragraph>
-            <em>Sacrebleu, la bibliothèque a perdu ses ouvrages...</em>
-          </Typography>
-          {(error != null) && <Box p={2} sx={errorStyle}>{error.message}</Box>}
-        </div>
-      )}
-      {(data != null) &&
-        <Shelf container>
-          {data.map((book) => (
-            <Grid
-              item
-              key={book.isbn}
-              sx={bookStyle}
-            >
-              <Typography color='secondary' align='center'>
-                ~ <em>{book.title}</em> ~
-              </Typography>
-            </Grid>
-          ))}
-        </Shelf>}
-    </Container>
+      </StyledTitle>
+      <StyledContent>
+        {(isLoading || isIdle) && <Loader ratio={isDownMd ? 0.7 : 1} />}
+        {isError && (
+          <div>
+            <Typography color='error' paragraph>
+              <em>Sacrebleu, la bibliothèque a perdu ses ouvrages...</em>
+            </Typography>
+            {(error != null) && <Box p={2} sx={errorStyle}>{error.message}</Box>}
+          </div>
+        )}
+        {(data != null) && (
+          <Shelf container>
+            {data.map((book, index) => (
+              <Grow key={book.isbn} in timeout={500} style={{ transitionDelay: `${index * 35}ms` }}>
+                <Grid item sx={{ flex: '1 0 auto' }}>
+                  <Book
+                    book={book}
+                    isSelected={selectedIsbn.includes(book.isbn)}
+                    onClick={
+                      () => selectedIsbn.includes(book.isbn)
+                        ? onDeleteBook(book)
+                        : onAddBook(book)
+                    }
+                    selectable
+                    vertical
+                  />
+                </Grid>
+              </Grow>
+            ))}
+          </Shelf>
+        )}
+      </StyledContent>
+    </StyledContainer>
   )
 }
 

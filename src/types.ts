@@ -2,7 +2,7 @@ export interface BookType {
   isbn: string
   price: number
   title: string
-  cover: URL
+  cover: string
 }
 
 export interface ErrorType {
