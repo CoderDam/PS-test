@@ -3,6 +3,7 @@ export interface BookType {
   price: number
   title: string
   cover: string
+  synopsis: string[]
 }
 
 export interface ErrorType {

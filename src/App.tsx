@@ -45,7 +45,7 @@ function App (): ReactElement {
   const isDownMd = useMediaQuery(theme.breakpoints.down('md'))
   const boxRef = useRef<HTMLElement>(null)
 
-  const onScrollBottom = (): void => boxRef.current?.scrollTo?.({ top: 1000, behavior: 'smooth' })
+  const onScrollBottom = (): void => boxRef.current?.scrollTo?.({ top: 10000, behavior: 'smooth' })
   const onAddBook = (book: BookType): void => setSelectedBooks((prevBooks) => [...prevBooks, book])
   const onDeleteBook = (book: BookType): void =>
     setSelectedBooks((prevBooks) => prevBooks.filter((prevBook) => prevBook.isbn !== book.isbn))

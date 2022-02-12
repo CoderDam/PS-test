@@ -1,5 +1,5 @@
 import { ReactElement, useRef } from 'react'
-import { Box, styled, Typography } from '@mui/material'
+import { Box, styled, Tooltip, Typography, useMediaQuery, useTheme } from '@mui/material'
 import { BookType } from '../types'
 import { getRandInt } from '../utils'
 
@@ -54,19 +54,76 @@ const Container = styled(Box)<ContainerProps>(({ theme, isSelected, selectable, 
   )
 }))
 
+type BookKeys = 'isbn' | 'price' | 'title' | 'cover' | 'synopsis'
+type TooltipType = BookKeys | 'hr' | Array<BookKeys | 'hr'>
+
 interface Props {
   book: BookType
   isSelected?: boolean
   onClick?: () => void
   selectable?: boolean
+  tooltipItems?: BookKeys | Array<BookKeys | 'hr'> | false
   vertical?: boolean
   zIndex?: number
 }
 
-function Book ({ book, isSelected = false, onClick, selectable = false, vertical = false, zIndex }: Props): ReactElement {
-  const gapRef = useRef(getRandInt(-15, 50))
+const getTooltipContent = (book: BookType, tooltipItems: TooltipType): string => {
+  let tooltipContent = ''
+  if (typeof tooltipItems === 'string') {
+    switch (tooltipItems) {
+      case 'hr':
+        tooltipContent += '<hr />'
+        break
+      case 'isbn':
+        tooltipContent += '<code>'
+        tooltipContent += book.isbn
+        tooltipContent += '</code>'
+        tooltipContent += '<br />'
+        break
+      case 'price':
+        tooltipContent += '<code>'
+        tooltipContent += 'Prix : '
+        tooltipContent += String(book.price)
+        tooltipContent += '€'
+        tooltipContent += '</code>'
+        tooltipContent += '<br />'
+        break
+      case 'title':
+        tooltipContent += '<big>'
+        tooltipContent += '<strong>'
+        tooltipContent += book.title
+        tooltipContent += '</strong>'
+        tooltipContent += '</big>'
+        tooltipContent += '<br />'
+        break
+      case 'cover':
+        tooltipContent += `<img src="${book.cover}" alt="${book.title}" />`
+        tooltipContent += '<br />'
+        break
+      default:
+        tooltipContent += String(book[tooltipItems])
+        tooltipContent += '<br />'
+    }
+  } else if (Array.isArray(tooltipItems)) {
+    tooltipContent += tooltipItems.map((fragment) => getTooltipContent(book, fragment)).join('')
+  }
+  return tooltipContent
+}
 
-  return (
+function Book ({
+  book,
+  isSelected = false,
+  onClick,
+  selectable = false,
+  tooltipItems = false,
+  vertical = false,
+  zIndex
+}: Props): ReactElement {
+  const gapRef = useRef(getRandInt(-15, 50))
+  const theme = useTheme()
+  const isDownMd = useMediaQuery(theme.breakpoints.down('md'))
+
+  const content = (
     <Container
       isSelected={isSelected}
       selectable={selectable}
@@ -79,6 +136,21 @@ function Book ({ book, isSelected = false, onClick, selectable = false, vertical
         ~ <em>{book.title}</em> ~
       </Typography>
     </Container>
+  )
+
+  if (tooltipItems === false || isDownMd) {
+    return content
+  }
+
+  const tooltipContent = getTooltipContent(book, tooltipItems)
+
+  return (
+    <Tooltip
+      arrow
+      title={<span dangerouslySetInnerHTML={{ __html: tooltipContent }} />}
+    >
+      {content}
+    </Tooltip>
   )
 }
 

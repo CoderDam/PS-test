@@ -1,11 +1,20 @@
 import { ReactElement } from 'react'
 import axios from 'axios'
 import { useQuery } from 'react-query'
-import { Box, Grow, Grid, styled, Typography, useMediaQuery, useTheme } from '@mui/material'
+import {
+  Box,
+  Grow,
+  Grid,
+  styled,
+  Typography,
+  useMediaQuery,
+  useTheme
+} from '@mui/material'
 
 import Loader from './Loader'
-import { BookType, ErrorType } from '../types'
 import Book from './Book'
+import BookData from './BookData'
+import { BookType, ErrorType } from '../types'
 import { StyledContainer, StyledContent, StyledTitle } from '../styles/styledComponents'
 
 const errorStyle = {
@@ -27,7 +36,6 @@ const Shelf = styled(Grid)(({ theme }) => ({
     padding: '0 7vh 0'
   }
 }))
-
 interface Props {
   selectedBooks: BookType[]
   onAddBook: (book: BookType) => void
@@ -75,11 +83,15 @@ function Books ({ selectedBooks, onAddBook, onDeleteBook }: Props): ReactElement
                     }
                     selectable
                     vertical
+                    tooltipItems={['title', 'isbn', 'price', 'hr', 'synopsis']}
                   />
                 </Grid>
               </Grow>
             ))}
           </Shelf>
+        )}
+        {isDownMd && selectedBooks.length > 0 && (
+          <BookData book={selectedBooks[selectedBooks.length - 1]} />
         )}
       </StyledContent>
     </StyledContainer>

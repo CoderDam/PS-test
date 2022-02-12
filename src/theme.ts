@@ -5,6 +5,21 @@ export const theme: Theme = createTheme({
     fontFamily: 'Redressed, cursive',
     fontSize: 20
   },
+  components: {
+    MuiTooltip: {
+      styleOverrides: {
+        tooltip: {
+          display: '-webkit-box',
+          fontSize: '1.2rem',
+          maxWidth: '55vw',
+          minWidth: 375,
+          overflow: 'hidden',
+          WebkitLineClamp: 7,
+          WebkitBoxOrient: 'vertical'
+        }
+      }
+    }
+  },
   palette: {
     primary: {
       main: '#edc9af'
