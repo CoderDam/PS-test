@@ -1,18 +1,23 @@
 import { StrictMode } from 'react'
 import ReactDOM from 'react-dom'
 import { CssBaseline, ThemeProvider } from '@mui/material'
+import { QueryClient, QueryClientProvider } from 'react-query'
 
 import App from './App'
 import reportWebVitals from './reportWebVitals'
 import { theme } from './theme'
 import '@fontsource/redressed'
 
+const queryClient = new QueryClient()
+
 ReactDOM.render(
   <StrictMode>
     <CssBaseline />
-    <ThemeProvider theme={theme}>
-      <App />
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
+    </QueryClientProvider>
   </StrictMode>,
   document.getElementById('root')
 )
