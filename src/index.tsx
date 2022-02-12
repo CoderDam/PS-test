@@ -1,12 +1,18 @@
 import { StrictMode } from 'react'
 import ReactDOM from 'react-dom'
+import { CssBaseline, ThemeProvider } from '@mui/material'
 
 import App from './App'
 import reportWebVitals from './reportWebVitals'
+import { theme } from './theme'
+import '@fontsource/redressed'
 
 ReactDOM.render(
   <StrictMode>
-    <App />
+    <CssBaseline />
+    <ThemeProvider theme={theme}>
+      <App />
+    </ThemeProvider>
   </StrictMode>,
   document.getElementById('root')
 )
