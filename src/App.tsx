@@ -2,6 +2,7 @@ import { ReactElement, useRef, useState } from 'react'
 import {
   Box,
   Container,
+  Fade,
   Grid,
   Grow,
   IconButton,
@@ -18,13 +19,27 @@ import Offers from './components/Offers'
 import { BookType } from './types'
 
 const boxStyle = (theme: Theme): any => ({
-  backgroundColor: '#6f4e37',
+  background: 'linear-gradient(to right, #1e0c0c, #6f4e37 7% 93%, #1e0c0c)',
   display: 'flex',
   flexDirection: 'column',
   height: '100vh',
   overflowX: 'hidden',
-  overflowY: 'auto',
-  padding: theme.spacing(2, 0, 4)
+  // keep the scrollbar visible to avoid UI jumps
+  overflowY: 'scroll',
+  // ...but make it discreet, on Firefox
+  scrollbarWidth: 'thin',
+  scrollbarColor: '#4b3621 #1e0c0c',
+  // ...and Chrome, Edge, Safari
+  '::-webkit-scrollbar': {
+    width: 8
+  },
+  '::-webkit-scrollbar-track': {
+    background: '#1e0c0c'
+  },
+  '::-webkit-scrollbar-thumb': {
+    background: '#4b3621',
+    borderRadius: 8
+  }
 })
 const buttonContainerStyle = (theme: Theme): any => ({
   bottom: theme.spacing(3),
@@ -53,25 +68,24 @@ function App (): ReactElement {
 
   return (
     <Box sx={boxStyle} ref={boxRef}>
-      <Typography
-        variant='h4'
-        align='center'
-        color='primary'
-        paragraph sx={{ padding: (theme) => theme.spacing(0, 2) }}
+      <Container
+        sx={{
+          backgroundColor: isDownMd ? '#6f4e37' : 'transparent',
+          flex: '1 0 auto',
+          paddingBottom: theme.spacing(4),
+          paddingTop: theme.spacing(2)
+        }}
       >
-        Bienvenue dans la bibliothèque d'
-        <strong>Henry Potier</strong>
-      </Typography>
-      {isDownMd && selectedBooks.length > 0 && (
-        <Box sx={buttonContainerStyle}>
-          <Grow in>
-            <IconButton size='large' sx={buttonStyle} onClick={onScrollBottom}>
-              <ArrowDownwardIcon />
-            </IconButton>
-          </Grow>
-        </Box>
-      )}
-      <Container sx={{ flex: '1 0 auto' }}>
+        <Typography
+          variant='h4'
+          align='center'
+          color='primary'
+          paragraph
+          sx={{ padding: theme.spacing(0, 2) }}
+        >
+          Bienvenue dans la bibliothèque d'
+          <strong>Henry Potier</strong>
+        </Typography>
         <Grid container spacing={3}>
           <Grid item xs={12} md={7} sx={{ display: 'flex' }}>
             <Books
@@ -91,8 +105,21 @@ function App (): ReactElement {
             </Grid>
           )}
         </Grid>
-        {selectedBooks.length > 1 && <Offers selectedBooks={selectedBooks} />}
+        {selectedBooks.length > 1 && (
+          <Fade in>
+            <Offers selectedBooks={selectedBooks} />
+          </Fade>
+        )}
       </Container>
+      {isDownMd && selectedBooks.length > 0 && (
+        <Box sx={buttonContainerStyle}>
+          <Grow in>
+            <IconButton size='large' sx={buttonStyle} onClick={onScrollBottom}>
+              <ArrowDownwardIcon />
+            </IconButton>
+          </Grow>
+        </Box>
+      )}
     </Box>
   )
 }

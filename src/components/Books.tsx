@@ -76,7 +76,7 @@ function Books ({ selectedBooks, onAddBook, onDeleteBook }: Props): ReactElement
                     }
                     selectable
                     vertical
-                    tooltipItems={['title', 'isbn', 'price', 'hr', 'synopsis']}
+                    tooltipItems={['title', 'price', 'hr', 'synopsis']}
                   />
                 </Grid>
               </Grow>

@@ -25,13 +25,10 @@ function BookData ({ book }: { book: BookType}): ReactElement {
         </Grid>
         <Grid item>
           <Typography>
-            <code>{book.price}€</code>
+            <code>{book.price.toLocaleString(undefined, { minimumFractionDigits: 2 })}€</code>
           </Typography>
         </Grid>
       </Grid>
-      <Typography align='right' sx={{ fontSize: '83%' }} gutterBottom>
-        <code>{book.isbn}</code>
-      </Typography>
       <Divider sx={{ marginBottom: (theme) => theme.spacing(1) }} />
       {book.synopsis.map((line) => (
         <Typography

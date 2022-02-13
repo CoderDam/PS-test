@@ -98,7 +98,7 @@ const getTooltipContent = (book: BookType, tooltipItems: TooltipType): string =>
       case 'price':
         tooltipContent += '<code>'
         tooltipContent += 'Prix : '
-        tooltipContent += String(book.price)
+        tooltipContent += book.price.toLocaleString(undefined, { minimumFractionDigits: 2 })
         tooltipContent += '€'
         tooltipContent += '</code>'
         tooltipContent += '<br />'

@@ -28,6 +28,7 @@ export const StyledError = styled(Box)(({ theme }) => ({
 
 export const StyledPaper = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.primary.main,
+  color: '#1e0c0c',
   marginTop: theme.spacing(3),
   padding: theme.spacing(2),
   [theme.breakpoints.up('md')]: {

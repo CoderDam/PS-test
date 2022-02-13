@@ -1,4 +1,4 @@
-import { ReactElement } from 'react'
+import { ForwardedRef, forwardRef, ReactElement } from 'react'
 import axios from 'axios'
 import { useQuery } from 'react-query'
 import { Box, Grid, Typography, useMediaQuery, useTheme } from '@mui/material'
@@ -10,7 +10,10 @@ import { getDiscount } from '../utils'
 import Loader from './Loader'
 import Offer from './Offer'
 
-function Comparison ({ selectedBooks }: { selectedBooks: BookType[] }): ReactElement {
+function Offers (
+  { selectedBooks }: { selectedBooks: BookType[] },
+  ref: ForwardedRef<HTMLElement>
+): ReactElement {
   const theme = useTheme()
   const isDownMd = useMediaQuery(theme.breakpoints.down('md'))
 
@@ -36,12 +39,12 @@ function Comparison ({ selectedBooks }: { selectedBooks: BookType[] }): ReactEle
   }
 
   return (
-    <StyledPaper sx={{ minHeight: 325, marginBottom: (theme) => theme.spacing(8) }}>
-      <Grid container spacing={1} alignItems='baseline' mb={2}>
-        <Grid item xs={12} md>
+    <StyledPaper sx={{ minHeight: 365, marginBottom: (theme) => theme.spacing(8) }} ref={ref}>
+      <Grid container spacing={1} alignItems='baseline' justifyContent='flex-end' mb={1}>
+        <Grid item xs={12} sm={8} md>
           <Typography variant='h5' paragraph>Il est temps de trouver des offres pour ces livres...</Typography>
         </Grid>
-        <Grid item xs={12} md='auto'>
+        <Grid item xs='auto' sm={4} md='auto'>
           <Box
             sx={{
               backgroundColor: '#4b3621',
@@ -50,7 +53,7 @@ function Comparison ({ selectedBooks }: { selectedBooks: BookType[] }): ReactEle
             }}
           >
             <Typography align='right'>
-              Avant réduction : <code>{totalBeforeOffers.toLocaleString(undefined, { minimumFractionDigits: 2 })}€</code>
+              Avant réduction&nbsp;: <code>{totalBeforeOffers.toLocaleString(undefined, { minimumFractionDigits: 2 })}€</code>
             </Typography>
           </Box>
         </Grid>
@@ -113,4 +116,4 @@ function Comparison ({ selectedBooks }: { selectedBooks: BookType[] }): ReactEle
   )
 }
 
-export default Comparison
+export default forwardRef(Offers)
