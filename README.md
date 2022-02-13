@@ -20,7 +20,7 @@ Il est également possible de :
 Liste des pricipales _libraries_ utilisées :
 - [Material-ui](https://mui.com/) : _lib_ de design et de style, utilisant à son tour sur [emotion.js](https://emotion.sh/)
 - [axios](https://axios-http.com/) : pour effectuer les requêtes à l'API
-- [React Query](https://react-query.tanstack.com/) : LA _lib_ pour gérer les ressources issues de l'application
+- [React Query](https://react-query.tanstack.com/) : LA _lib_ pour gérer les ressources issues de l'API
 - [Jest](https://jestjs.io/) & [@testing-library](https://testing-library.com/) : pour les tests
 
 ---
