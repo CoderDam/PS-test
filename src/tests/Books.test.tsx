@@ -8,6 +8,7 @@ const queryClient = new QueryClient()
 describe('Books', () => {
   test('renders the title', () => {
     const props = {
+      search: '',
       selectedBooks: [],
       onAddBook: jest.fn(),
       onDeleteBook: jest.fn()

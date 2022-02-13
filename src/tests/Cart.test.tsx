@@ -5,6 +5,7 @@ import Cart from '../components/Cart'
 describe('Cart', () => {
   test('renders the cart\'s title', () => {
     const props = {
+      search: '',
       selectedBooks: [{
         isbn: 'isbn',
         price: 5,

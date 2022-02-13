@@ -19,6 +19,7 @@ import { StyledContainer, StyledContent, StyledError, StyledTitle } from '../sty
 const Shelf = styled(Grid)(({ theme }) => ({
   borderBottom: '30px solid #1e0c0c',
   flexWrap: 'nowrap',
+  height: 440,
   [theme.breakpoints.down('sm')]: {
     padding: '0 2vh'
   },
@@ -30,12 +31,13 @@ const Shelf = styled(Grid)(({ theme }) => ({
   }
 }))
 interface Props {
+  search: string
   selectedBooks: BookType[]
   onAddBook: (book: BookType) => void
   onDeleteBook: (book: BookType) => void
 }
 
-function Books ({ selectedBooks, onAddBook, onDeleteBook }: Props): ReactElement {
+function Books ({ search, selectedBooks, onAddBook, onDeleteBook }: Props): ReactElement {
   const theme = useTheme()
   const isDownMd = useMediaQuery(theme.breakpoints.down('md'))
 
@@ -43,7 +45,9 @@ function Books ({ selectedBooks, onAddBook, onDeleteBook }: Props): ReactElement
     'books',
     async () => await axios.get('https://henri-potier.techx.fr/books').then((res) => res.data)
   )
-
+  const filtered = (data != null)
+    ? data?.filter((book) => book.title.toUpperCase().includes(search.toUpperCase()))
+    : []
   const selectedIsbn: string[] = selectedBooks.map((book: BookType) => book.isbn)
 
   return (
@@ -63,7 +67,7 @@ function Books ({ selectedBooks, onAddBook, onDeleteBook }: Props): ReactElement
         )}
         {(data != null) && (
           <Shelf container>
-            {data.map((book, index) => (
+            {filtered.map((book, index) => (
               <Grow key={book.isbn} in timeout={500} style={{ transitionDelay: `${index * 35}ms` }}>
                 <Grid item sx={{ flex: '1 0 auto' }}>
                   <Book
@@ -74,8 +78,9 @@ function Books ({ selectedBooks, onAddBook, onDeleteBook }: Props): ReactElement
                         ? onDeleteBook(book)
                         : onAddBook(book)
                     }
-                    vertical
+                    search={search}
                     tooltipItems={['title', 'price', 'hr', 'synopsis']}
+                    vertical
                   />
                 </Grid>
               </Grow>

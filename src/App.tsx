@@ -6,12 +6,16 @@ import {
   Grid,
   Grow,
   IconButton,
+  InputAdornment,
+  TextField,
   Theme,
   Typography,
   useMediaQuery,
   useTheme
 } from '@mui/material'
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
+import ClearIcon from '@mui/icons-material/Clear'
+import SearchIcon from '@mui/icons-material/Search'
 
 import Books from './components/Books'
 import Cart from './components/Cart'
@@ -54,9 +58,15 @@ const buttonStyle = (theme: Theme): any => ({
     backgroundColor: theme.palette.primary.dark
   }
 })
+const getIconStyle = (isFocus: boolean) => (theme: Theme): any => ({
+  color: isFocus ? theme.palette.primary.main : 'transparent',
+  transition: theme.transitions.create('color')
+})
 
 function App (): ReactElement {
   const [selectedBooks, setSelectedBooks] = useState<BookType[]>([])
+  const [search, setSearch] = useState<string>('')
+  const [isFocus, setIsFocus] = useState<boolean>(false)
   const theme = useTheme()
   const isDownMd = useMediaQuery(theme.breakpoints.down('md'))
   const boxRef = useRef<HTMLElement>(null)
@@ -86,9 +96,39 @@ function App (): ReactElement {
           Bienvenue dans la bibliothèque d'
           <strong>Henry Potier</strong>
         </Typography>
+        <Box sx={{ textAlign: 'center' }}>
+          <TextField
+            inputProps={{
+              style: {
+                textAlign: 'center',
+                color: theme.palette.secondary.main
+              }
+            }}
+            InputProps={{
+              onFocus: () => setIsFocus(true),
+              onBlur: () => setIsFocus(false),
+              startAdornment: (
+                <InputAdornment position='start'>
+                  <SearchIcon sx={getIconStyle(isFocus)} />
+                </InputAdornment>
+              ),
+              endAdornment: (
+                <InputAdornment position='end'>
+                  <IconButton onClick={() => setSearch('')}>
+                    <ClearIcon sx={getIconStyle(isFocus)} />
+                  </IconButton>
+                </InputAdornment>
+              )
+            }}
+            variant='standard'
+            value={search}
+            onChange={(event) => setSearch(event.target.value.trimStart())}
+          />
+        </Box>
         <Grid container spacing={3}>
           <Grid item xs={12} md={7} sx={{ display: 'flex' }}>
             <Books
+              search={search}
               selectedBooks={selectedBooks}
               onAddBook={onAddBook}
               onDeleteBook={onDeleteBook}
@@ -101,7 +141,11 @@ function App (): ReactElement {
               md={5}
               sx={{ display: 'flex', paddingBottom: (theme) => theme.spacing(3) }}
             >
-              <Cart selectedBooks={selectedBooks} onDeleteBook={onDeleteBook} />
+              <Cart
+                search={search}
+                selectedBooks={selectedBooks}
+                onDeleteBook={onDeleteBook}
+              />
             </Grid>
           )}
         </Grid>

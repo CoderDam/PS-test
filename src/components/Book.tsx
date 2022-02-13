@@ -46,7 +46,8 @@ const Container = styled(Box)<ContainerProps>(({ theme, isSelected, selectable, 
     vertical
       ? {
           height: 410,
-          writingMode: 'vertical-lr'
+          maxWidth: 80,
+          writingMode: 'vertical-rl'
         }
       : {
           height: 60,
@@ -63,6 +64,7 @@ export interface BookProps {
   book: BookType
   isSelected?: boolean
   onClick?: () => void
+  search?: string
   tooltipItems?: BookKeys | Array<BookKeys | 'hr'> | false
   tooltipPlacement?:
   | 'top'
@@ -128,6 +130,7 @@ function Book ({
   book,
   isSelected = false,
   onClick,
+  search = '',
   tooltipItems = false,
   tooltipPlacement = 'bottom',
   vertical = false,
@@ -136,6 +139,7 @@ function Book ({
   const gapRef = useRef(getRandInt(-15, 50))
   const theme = useTheme()
   const isDownMd = useMediaQuery(theme.breakpoints.down('md'))
+  const splitTitle = book.title.toLowerCase().split(search.toLowerCase())
 
   const content = (
     <Container
@@ -146,8 +150,18 @@ function Book ({
       onClick={onClick != null ? onClick : () => null}
       sx={{ left: `${gapRef.current}px`, zIndex }}
     >
-      <Typography color='inherit' align='center'>
-        ~ <em>{book.title}</em> ~
+      <Typography color='inherit' align='center' sx={{ textTransform: 'capitalize' }}>
+        ~
+        {' '}
+        <em
+          dangerouslySetInnerHTML={{
+            __html: search.length > 0
+              ? splitTitle.join(`<mark>${search.toLowerCase()}</mark>`)
+              : book.title
+          }}
+        />
+        {' '}
+        ~
       </Typography>
     </Container>
   )

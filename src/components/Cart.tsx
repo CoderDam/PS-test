@@ -39,11 +39,12 @@ const deleteStyle = (theme: Theme): any => ({
 })
 
 interface Props {
+  search: string
   selectedBooks: BookType[]
   onDeleteBook: (book: BookType) => void
 }
 
-function Cart ({ selectedBooks, onDeleteBook }: Props): ReactElement {
+function Cart ({ search, selectedBooks, onDeleteBook }: Props): ReactElement {
   const contentRef = useRef(null)
   const theme = useTheme()
   const isDownMd = useMediaQuery(theme.breakpoints.down('md'))
@@ -78,9 +79,10 @@ function Cart ({ selectedBooks, onDeleteBook }: Props): ReactElement {
               <Book
                 book={book}
                 onClick={() => onDeleteBook(book)}
-                zIndex={7 - index}
+                search={search}
                 tooltipItems='price'
                 tooltipPlacement='right'
+                zIndex={7 - index}
               />
             </div>
           </Slide>
