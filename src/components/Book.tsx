@@ -1,5 +1,6 @@
 import { ReactElement, useRef } from 'react'
 import { Box, styled, Tooltip, Typography, useMediaQuery, useTheme } from '@mui/material'
+
 import { BookType } from '../types'
 import { getRandInt } from '../utils'
 
@@ -23,7 +24,8 @@ const Container = styled(Box)<ContainerProps>(({ theme, isSelected, selectable, 
     isSelected
       ? {
           backgroundColor: theme.palette.grey[900],
-          color: theme.palette.secondary.dark
+          color: theme.palette.secondary.dark,
+          visibility: 'hidden'
         }
       : {
           backgroundColor: '#4b3621',
@@ -63,6 +65,19 @@ interface Props {
   onClick?: () => void
   selectable?: boolean
   tooltipItems?: BookKeys | Array<BookKeys | 'hr'> | false
+  tooltipPlacement?:
+  | 'top'
+  | 'bottom'
+  | 'left'
+  | 'right'
+  | 'top-end'
+  | 'top-start'
+  | 'bottom-end'
+  | 'bottom-start'
+  | 'left-end'
+  | 'left-start'
+  | 'right-end'
+  | 'right-start'
   vertical?: boolean
   zIndex?: number
 }
@@ -116,6 +131,7 @@ function Book ({
   onClick,
   selectable = false,
   tooltipItems = false,
+  tooltipPlacement = 'bottom',
   vertical = false,
   zIndex
 }: Props): ReactElement {
@@ -146,7 +162,7 @@ function Book ({
 
   return (
     <Tooltip
-      arrow
+      placement={tooltipPlacement}
       title={<span dangerouslySetInnerHTML={{ __html: tooltipContent }} />}
     >
       {content}

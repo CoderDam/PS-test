@@ -2,7 +2,6 @@ import { ReactElement } from 'react'
 import axios from 'axios'
 import { useQuery } from 'react-query'
 import {
-  Box,
   Grow,
   Grid,
   styled,
@@ -15,14 +14,8 @@ import Loader from './Loader'
 import Book from './Book'
 import BookData from './BookData'
 import { BookType, ErrorType } from '../types'
-import { StyledContainer, StyledContent, StyledTitle } from '../styles/styledComponents'
+import { StyledContainer, StyledContent, StyledError, StyledTitle } from '../styles/styledComponents'
 
-const errorStyle = {
-  backgroundColor: 'black',
-  color: 'white',
-  fontFamily: 'monospace',
-  opacity: 0.75
-}
 const Shelf = styled(Grid)(({ theme }) => ({
   borderBottom: '30px solid #1e0c0c',
   flexWrap: 'nowrap',
@@ -65,7 +58,7 @@ function Books ({ selectedBooks, onAddBook, onDeleteBook }: Props): ReactElement
             <Typography color='error' paragraph>
               <em>Sacrebleu, la bibliothèque a perdu ses ouvrages...</em>
             </Typography>
-            {(error != null) && <Box p={2} sx={errorStyle}>{error.message}</Box>}
+            {(error != null) && <StyledError>{error.message}</StyledError>}
           </div>
         )}
         {(data != null) && (

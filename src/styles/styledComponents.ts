@@ -18,6 +18,23 @@ export const StyledContent = styled('div')(({ theme }) => ({
   }
 }))
 
+export const StyledError = styled(Box)(({ theme }) => ({
+  backgroundColor: 'black',
+  color: 'white',
+  fontFamily: 'monospace',
+  opacity: 0.75,
+  padding: theme.spacing(2)
+}))
+
+export const StyledPaper = styled(Box)(({ theme }) => ({
+  backgroundColor: theme.palette.primary.main,
+  marginTop: theme.spacing(3),
+  padding: theme.spacing(2),
+  [theme.breakpoints.up('md')]: {
+    padding: theme.spacing(2, 4)
+  }
+}))
+
 export const StyledTitle = styled(Typography)(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
     marginTop: theme.spacing(4)

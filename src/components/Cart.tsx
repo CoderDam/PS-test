@@ -54,7 +54,8 @@ function Cart ({ selectedBooks, onDeleteBook }: Props): ReactElement {
                 selectable
                 onClick={() => onDeleteBook(book)}
                 zIndex={7 - index}
-                tooltipItems={false}
+                tooltipItems='price'
+                tooltipPlacement='right'
               />
             </div>
           </Slide>

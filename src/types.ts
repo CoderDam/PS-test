@@ -6,6 +6,12 @@ export interface BookType {
   synopsis: string[]
 }
 
+export interface OfferType {
+  type: 'percentage' | 'minus' | 'slice'
+  value: number
+  sliceValue?: number
+}
+
 export interface ErrorType {
   message: string
 }

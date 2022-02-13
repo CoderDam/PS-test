@@ -12,7 +12,6 @@ export const theme: Theme = createTheme({
           display: '-webkit-box',
           fontSize: '1.2rem',
           maxWidth: '55vw',
-          minWidth: 375,
           overflow: 'hidden',
           WebkitLineClamp: 7,
           WebkitBoxOrient: 'vertical'

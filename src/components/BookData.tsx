@@ -1,7 +1,8 @@
 import { ReactElement } from 'react'
-import { Box, Divider, Grid, styled, Typography } from '@mui/material'
+import { Divider, Grid, styled, Typography } from '@mui/material'
 
 import { BookType } from '../types'
+import { StyledPaper } from '../styles/styledComponents'
 
 const Img = styled('img')(({ theme }) => ({
   display: 'block',
@@ -11,13 +12,7 @@ const Img = styled('img')(({ theme }) => ({
 
 function BookData ({ book }: { book: BookType}): ReactElement {
   return (
-    <Box
-      sx={(theme) => ({
-        backgroundColor: theme.palette.primary.main,
-        marginTop: theme.spacing(3),
-        padding: theme.spacing(2)
-      })}
-    >
+    <StyledPaper>
       <Img
         src={book.cover}
         alt={book.title}
@@ -34,7 +29,7 @@ function BookData ({ book }: { book: BookType}): ReactElement {
           </Typography>
         </Grid>
       </Grid>
-      <Typography align='right' sx={{ fontSize: '90%' }} gutterBottom>
+      <Typography align='right' sx={{ fontSize: '83%' }} gutterBottom>
         <code>{book.isbn}</code>
       </Typography>
       <Divider sx={{ marginBottom: (theme) => theme.spacing(1) }} />
@@ -51,7 +46,7 @@ function BookData ({ book }: { book: BookType}): ReactElement {
           {line}
         </Typography>
       ))}
-    </Box>
+    </StyledPaper>
   )
 }
 

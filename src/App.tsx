@@ -14,6 +14,7 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
 
 import Books from './components/Books'
 import Cart from './components/Cart'
+import Offers from './components/Offers'
 import { BookType } from './types'
 
 const boxStyle = (theme: Theme): any => ({
@@ -90,6 +91,7 @@ function App (): ReactElement {
             </Grid>
           )}
         </Grid>
+        {selectedBooks.length > 1 && <Offers selectedBooks={selectedBooks} />}
       </Container>
     </Box>
   )
