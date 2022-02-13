@@ -2,9 +2,11 @@ import { ReactElement } from 'react'
 import axios from 'axios'
 import { useQuery } from 'react-query'
 import { Box, Grid, Typography, useMediaQuery, useTheme } from '@mui/material'
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
 
-import { BookType, ErrorType, OfferType } from '../types'
+import { BookType, CompleteOfferType, ErrorType, OfferType } from '../types'
 import { StyledError, StyledPaper } from '../styles/styledComponents'
+import { getDiscount } from '../utils'
 import Loader from './Loader'
 import Offer from './Offer'
 
@@ -24,9 +26,35 @@ function Comparison ({ selectedBooks }: { selectedBooks: BookType[] }): ReactEle
     )
   )
 
+  let completeOffers: CompleteOfferType[] = []
+  if ((data?.offers != null) && (data.offers.length > 0)) {
+    completeOffers = data.offers.map((offer) => ({
+      ...offer,
+      discount: getDiscount(offer, totalBeforeOffers)
+    }))
+    completeOffers.sort((a, b) => b.discount - a.discount)
+  }
+
   return (
     <StyledPaper sx={{ minHeight: 325, marginBottom: (theme) => theme.spacing(8) }}>
-      <Typography variant='h5' paragraph>Il est temps de trouver des offres pour ces livres...</Typography>
+      <Grid container spacing={1} alignItems='baseline' mb={2}>
+        <Grid item xs={12} md>
+          <Typography variant='h5' paragraph>Il est temps de trouver des offres pour ces livres...</Typography>
+        </Grid>
+        <Grid item xs={12} md='auto'>
+          <Box
+            sx={{
+              backgroundColor: '#4b3621',
+              color: theme.palette.secondary.main,
+              padding: theme.spacing(1, 2)
+            }}
+          >
+            <Typography align='right'>
+              Avant réduction : <code>{totalBeforeOffers.toLocaleString(undefined, { minimumFractionDigits: 2 })}€</code>
+            </Typography>
+          </Box>
+        </Grid>
+      </Grid>
       {(isLoading || isIdle) && (
         <Box sx={{ textAlign: 'center' }}>
           <Loader ratio={isDownMd ? 0.7 : 1} />
@@ -41,15 +69,34 @@ function Comparison ({ selectedBooks }: { selectedBooks: BookType[] }): ReactEle
         </div>
       )}
       {// eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-        (data?.offers?.length)
+        (completeOffers.length)
           ? (
-            <Grid container spacing={2}>
-              {data.offers.map((offer) => (
-                <Grid key={offer.type} item xs={12} md sx={{ textAlign: 'center' }}>
-                  <Offer offer={offer} total={totalBeforeOffers} />
-                </Grid>
-              ))}
-            </Grid>
+            <>
+              {
+                isDownMd
+                  ? (
+                    <Box p={2}>
+                      <Typography align='center' mb={4} sx={{ fontSize: '2.6rem' }}>
+                        <ArrowDownwardIcon sx={{ marginBottom: -1 }} />
+                        {' '}
+                        La meilleure
+                        {' '}
+                        <ArrowDownwardIcon sx={{ marginBottom: -1 }} />
+                      </Typography>
+                      <Offer offer={completeOffers[0]} total={totalBeforeOffers} index={0} />
+                    </Box>
+                    )
+                  : (
+                    <Grid container spacing={2}>
+                      {completeOffers.map((offer, index) => (
+                        <Grid key={offer.type} item xs={12} md>
+                          <Offer offer={offer} total={totalBeforeOffers} index={index} />
+                        </Grid>
+                      ))}
+                    </Grid>
+                    )
+                }
+            </>
             )
           : (
               isLoading ||

@@ -12,6 +12,10 @@ export interface OfferType {
   sliceValue?: number
 }
 
+export interface CompleteOfferType extends OfferType {
+  discount: number
+}
+
 export interface ErrorType {
   message: string
 }

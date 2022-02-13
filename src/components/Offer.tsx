@@ -1,79 +1,70 @@
 import { ReactElement } from 'react'
-import { Box, Typography } from '@mui/material'
+import { Box, Theme, Typography } from '@mui/material'
 
-import { OfferType } from '../types'
+import { CompleteOfferType } from '../types'
+
+const getBoxStyle = (index: number) => (theme: Theme): any => ({
+  backgroundColor: index === 0 ? 'white' : 'transparent',
+  borderRadius: 10,
+  boxShadow: index === 0
+    ? `0 0 20px 10px ${theme.palette.secondary.main},
+      inset 0 0 10px 5px ${theme.palette.secondary.main}`
+    : 'none',
+  color: index === 0 ? '#4b3621' : 'inherit',
+  margin: theme.spacing(2, 0),
+  opacity: (10 - (index * 3)) / 10,
+  padding: theme.spacing(2, 1),
+  textAlign: 'center',
+  transform: `scale(${(10 - (index * 1.75)) / 10})`
+})
 
 interface Props {
-  offer: OfferType
+  index: number
+  offer: CompleteOfferType
   total: number
 }
 
-function Offer ({ offer, total }: Props): ReactElement {
-  if (offer.type === 'percentage') {
-    return (
-      <Box>
-        <Typography variant='h4' sx={{ position: 'relative', height: (theme) => theme.spacing(9) }}>
-          {offer.value.toLocaleString()}%
-          {' '}
-          <small>
-            <small>de réduction</small>
-          </small>
-        </Typography>
-        <Typography>soit un total</Typography>
-        <Typography variant='h3'>
-          <code>{(total * (1 - (offer.value / 100))).toLocaleString()}€</code>
-        </Typography>
-        <Typography>au lieu de <code>{total.toLocaleString()}€</code></Typography>
-      </Box>
-    )
-  }
-
-  if (offer.type === 'minus') {
-    return (
-      <Box>
-        <Typography variant='h4' sx={{ position: 'relative', height: (theme) => theme.spacing(9) }}>
-          {offer.value.toLocaleString()}€
-          {' '}
-          <small>
-            <small>de réduction</small>
-          </small>
-        </Typography>
-        <Typography>soit un total</Typography>
-        <Typography variant='h3'>
-          <code>{(total - offer.value).toLocaleString()}€</code>
-        </Typography>
-        <Typography>au lieu de <code>{total.toLocaleString()}€</code></Typography>
-      </Box>
-    )
-  }
-
-  if (offer.type === 'slice') {
-    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-    const slices = offer?.sliceValue ? Math.floor(total / offer.sliceValue) : 0
-
-    return (
-      <Box>
-        <Typography variant='h4' sx={{ position: 'relative', height: (theme) => theme.spacing(9) }}>
-          {offer.value.toLocaleString()}€
-          {' '}
-          <small>
-            <small>de réduction</small>
-          </small>
-          <br />
-          <Typography variant='caption' sx={{ position: 'absolute', width: '100%', left: 0, top: (theme) => theme.spacing(6) }}>
+function Offer ({ index, offer, total }: Props): ReactElement {
+  return (
+    <Box sx={getBoxStyle(index)}>
+      <Typography
+        sx={{
+          fontSize: '2.8rem',
+          height: (theme) => theme.spacing(9),
+          position: 'relative'
+        }}
+      >
+        {offer.value.toLocaleString()}{offer.type === 'percentage' ? '%' : '€'}
+        {' '}
+        <small>
+          <small>de réduction</small>
+        </small>
+        {offer.type === 'slice' && (
+          <Typography
+            variant='caption'
+            sx={{ position: 'absolute', width: '100%', left: 0, top: (theme) => theme.spacing(6) }}
+          >
             tous les {offer.sliceValue?.toLocaleString()}€ d'achat
           </Typography>
-        </Typography>
-        <Typography>soit un total</Typography>
-        <Typography variant='h3'>
-          <code>{(total - (slices * offer.value)).toLocaleString()}€</code>
-        </Typography>
-        <Typography>au lieu de <code>{total.toLocaleString()}€</code></Typography>
-      </Box>
-    )
-  }
-
-  return <></>
+        )}
+      </Typography>
+      <Typography>soit un total de</Typography>
+      <Typography variant='h4'>
+        <strong>
+          <code>
+            {(total - offer.discount).toLocaleString(undefined, { minimumFractionDigits: 2 })}€
+          </code>
+        </strong>
+      </Typography>
+      <Typography>
+        vous économisez
+        {' '}
+        <code>
+          {offer.discount.toLocaleString(undefined, { minimumFractionDigits: 2 })}€
+        </code>
+      </Typography>
+    </Box>
+  )
 }
 
 export default Offer
