@@ -8,7 +8,7 @@ Cette application **React Typscript** a été créée en utilisant `create-react
 Avant toute chose, il faut installer toutes les dépendances en executant la commande `npm i`
 
 Ensuite, pour faire tourner l'application, 2 possibilités :
-- `npm start` : installe toutes les dépendances et lance une version de développement de l'application qui est alors consultable sur `localhost:3000`
+- `npm start` : lance une version de développement de l'application qui est alors consultable sur `localhost:3000`
 - `npm run build` : crée une version de production de l'application. Elle est alors consultable en ouvrant le fichier `index.html` à la racine du dossier `build`
 
 Il est également possible de :
@@ -17,7 +17,7 @@ Il est également possible de :
 
 ---
 
-Liste des pricipales _libraries_ utilisées :
+Liste des principales _libraries_ utilisées :
 - [Material-ui](https://mui.com/) : _lib_ de design et de style, utilisant à son tour sur [emotion.js](https://emotion.sh/)
 - [axios](https://axios-http.com/) : pour effectuer les requêtes à l'API
 - [React Query](https://react-query.tanstack.com/) : LA _lib_ pour gérer les ressources issues de l'API
