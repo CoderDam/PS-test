@@ -1,0 +1,77 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`App snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="MuiBox-root css-yj71k8"
+  >
+    <div
+      class="MuiContainer-root MuiContainer-maxWidthLg css-1bkqgu-MuiContainer-root"
+    >
+      <p
+        class="MuiTypography-root MuiTypography-h4 MuiTypography-alignCenter MuiTypography-paragraph css-1rwpz78-MuiTypography-root"
+      >
+        Bienvenue dans la bibliothèque d'
+        <strong>
+          Henry Potier
+        </strong>
+      </p>
+      <div
+        class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-3 css-zow5z4-MuiGrid-root"
+      >
+        <div
+          class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-7 css-tjynou-MuiGrid-root"
+        >
+          <div
+            class="MuiBox-root css-1qi6aoa"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-h5 MuiTypography-paragraph css-tidlkh-MuiTypography-root"
+            >
+              Voici les livres que vous pouvez consulter ici :
+            </p>
+            <div
+              class="css-obcb4a"
+            >
+              <div
+                class="bookshelf_container"
+                style="transform: scale(1); margin-bottom: 0%;"
+              >
+                <div
+                  class="bookshelf_wrapper"
+                >
+                  <ul
+                    class="books_list"
+                  >
+                    <li
+                      class="book_item first"
+                    />
+                    <li
+                      class="book_item second"
+                    />
+                    <li
+                      class="book_item third"
+                    />
+                    <li
+                      class="book_item fourth"
+                    />
+                    <li
+                      class="book_item fifth"
+                    />
+                    <li
+                      class="book_item sixth"
+                    />
+                  </ul>
+                  <div
+                    class="shelf"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
