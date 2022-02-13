@@ -18,13 +18,13 @@ const getBoxStyle = (index: number) => (theme: Theme): any => ({
   transform: `scale(${(10 - (index * 1.75)) / 10})`
 })
 
-interface Props {
+export interface OfferProps {
   index: number
   offer: CompleteOfferType
   total: number
 }
 
-function Offer ({ index, offer, total }: Props): ReactElement {
+function Offer ({ index, offer, total }: OfferProps): ReactElement {
   return (
     <Box sx={getBoxStyle(index)}>
       <Typography

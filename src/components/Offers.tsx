@@ -79,7 +79,7 @@ function Offers (
                 isDownMd
                   ? (
                     <Box p={2}>
-                      <Typography align='center' mb={4} sx={{ fontSize: '2.6rem' }}>
+                      <Typography align='center' mb={4} sx={{ fontSize: '2.5rem' }}>
                         <ArrowDownwardIcon sx={{ marginBottom: -1 }} />
                         {' '}
                         La meilleure

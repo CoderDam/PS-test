@@ -74,7 +74,6 @@ function Books ({ selectedBooks, onAddBook, onDeleteBook }: Props): ReactElement
                         ? onDeleteBook(book)
                         : onAddBook(book)
                     }
-                    selectable
                     vertical
                     tooltipItems={['title', 'price', 'hr', 'synopsis']}
                   />

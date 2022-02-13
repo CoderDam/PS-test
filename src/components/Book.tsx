@@ -59,11 +59,10 @@ const Container = styled(Box)<ContainerProps>(({ theme, isSelected, selectable, 
 type BookKeys = 'isbn' | 'price' | 'title' | 'cover' | 'synopsis'
 type TooltipType = BookKeys | 'hr' | Array<BookKeys | 'hr'>
 
-interface Props {
+export interface BookProps {
   book: BookType
   isSelected?: boolean
   onClick?: () => void
-  selectable?: boolean
   tooltipItems?: BookKeys | Array<BookKeys | 'hr'> | false
   tooltipPlacement?:
   | 'top'
@@ -129,12 +128,11 @@ function Book ({
   book,
   isSelected = false,
   onClick,
-  selectable = false,
   tooltipItems = false,
   tooltipPlacement = 'bottom',
   vertical = false,
   zIndex
-}: Props): ReactElement {
+}: BookProps): ReactElement {
   const gapRef = useRef(getRandInt(-15, 50))
   const theme = useTheme()
   const isDownMd = useMediaQuery(theme.breakpoints.down('md'))
@@ -142,10 +140,10 @@ function Book ({
   const content = (
     <Container
       isSelected={isSelected}
-      selectable={selectable}
+      selectable={onClick != null}
       vertical={vertical}
       role='button'
-      onClick={(selectable && (onClick != null)) ? onClick : () => null}
+      onClick={onClick != null ? onClick : () => null}
       sx={{ left: `${gapRef.current}px`, zIndex }}
     >
       <Typography color='inherit' align='center'>

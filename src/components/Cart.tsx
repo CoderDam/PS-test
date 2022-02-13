@@ -77,7 +77,6 @@ function Cart ({ selectedBooks, onDeleteBook }: Props): ReactElement {
             <div>
               <Book
                 book={book}
-                selectable
                 onClick={() => onDeleteBook(book)}
                 zIndex={7 - index}
                 tooltipItems='price'
