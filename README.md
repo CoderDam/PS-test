@@ -1,5 +1,5 @@
 # La bibliothèque d'Henri Potier
-Un test technique de Damien GARNÈS pour Publicis Sapient
+Un test technique de Damien GARNÈS
 
 ---
 
